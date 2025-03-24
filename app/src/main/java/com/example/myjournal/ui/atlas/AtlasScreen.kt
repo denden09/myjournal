@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.CameraPosition
 fun AtlasScreen(journals: List<Journal>) {
     val context = LocalContext.current
 
-    // Font Pacifico
+
     val pacificoFont = FontFamily(Font(R.font.pacifico))
 
     val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -35,7 +35,7 @@ fun AtlasScreen(journals: List<Journal>) {
         locationPermissionState.launchPermissionRequest()
     }
 
-    // ✅ Surface as the background
+    // Surface background
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
