@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
     implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
