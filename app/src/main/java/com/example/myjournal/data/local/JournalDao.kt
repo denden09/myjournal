@@ -6,6 +6,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JournalDao {
 
+    @Query("DELETE FROM journals")
+    suspend fun clearAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(journals: List<JournalEntity>)
+
     @Query("SELECT * FROM journals ORDER BY date DESC")
     fun getAllJournals(): Flow<List<JournalEntity>>
 

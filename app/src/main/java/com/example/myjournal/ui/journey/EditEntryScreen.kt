@@ -46,15 +46,21 @@ fun EditEntryScreen(
                                 title = title,
                                 content = content
                             )
-                            viewModel.updateJournal(updatedJournal)
-                            onUpdate(title, content)
+                            try {
+                                viewModel.updateJournal(updatedJournal)
+                                onUpdate(title, content)
 
-                            coroutineScope.launch {
-                                snackbarHostState.showSnackbar("Journal updated!")
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Journal updated!")
+                                }
+
+                                // Optional: Kembali setelah update
+                                onBack()
+                            } catch (e: Exception) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Failed to update journal.")
+                                }
                             }
-
-                            // Optional: Kembali setelah update
-                            // onBack()
                         }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save Changes")

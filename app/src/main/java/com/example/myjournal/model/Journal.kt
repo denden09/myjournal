@@ -1,12 +1,12 @@
 package com.example.myjournal.model
 
 data class Journal(
-    val id: Int = 0,
+    val id: Int? = 0,
     val title: String,
     val content: String,
     val date: String,
     val imageUri: String?,
-    val location: String?,  // Lokasi dalam bentuk string (misalnya "37.7749,-122.4194")
+    val location: String?,
     val moodLevel: Int,
 
     // Menggunakan var untuk latitude dan longitude

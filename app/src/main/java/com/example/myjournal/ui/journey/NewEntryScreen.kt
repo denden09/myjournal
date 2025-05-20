@@ -52,9 +52,7 @@ fun NewEntryScreen(
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-    }
+    ) { uri: Uri? -> selectedImageUri = uri }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicturePreview()
@@ -150,15 +148,11 @@ fun NewEntryScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                IconButton(onClick = {
-                    galleryLauncher.launch("image/*")
-                }) {
+                IconButton(onClick = { galleryLauncher.launch("image/*") }) {
                     Icon(Icons.Default.Image, contentDescription = "Pick from Gallery")
                 }
 
-                IconButton(onClick = {
-                    cameraLauncher.launch(null)
-                }) {
+                IconButton(onClick = { cameraLauncher.launch(null) }) {
                     Icon(Icons.Default.CameraAlt, contentDescription = "Take Photo")
                 }
 
@@ -187,10 +181,3 @@ fun NewEntryScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewNewEntryScreen() {
-    NewEntryScreen(
-        onSave = { _, _, _, _ -> }
-    )
-}

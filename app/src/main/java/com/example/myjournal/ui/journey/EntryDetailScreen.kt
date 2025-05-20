@@ -1,23 +1,24 @@
+// EntryDetailScreen.kt
 package com.example.myjournal.ui.journey
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.myjournal.model.Journal
-import com.example.myjournal.R // Sesuaikan resource!
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun EntryDetailScreen(
@@ -25,6 +26,8 @@ fun EntryDetailScreen(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,10 +107,7 @@ fun EntryDetailScreen(
             }
 
             Button(
-                onClick = {
-                    // Optional: Konfirmasi sebelum hapus
-                    onDelete()
-                },
+                onClick = { showDeleteDialog = true },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error
                 )
@@ -115,6 +115,28 @@ fun EntryDetailScreen(
                 Text("Delete")
             }
         }
+    }
+
+    // Delete Confirmation Dialog
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Confirm Delete") },
+            text = { Text("Are you sure you want to delete this journal entry?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDelete() // Call onDelete from ViewModel
+                    showDeleteDialog = false
+                }) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("No")
+                }
+            }
+        )
     }
 }
 
@@ -124,19 +146,42 @@ fun MoodIndicator(moodLevel: Int) {
         1 -> Color.Red to "😢"
         2 -> Color(0xFFFFA000) to "😐"
         3 -> Color.Green to "😊"
-        else -> Color.Gray to "❓"
+        else -> Color.Gray to "🤷"
     }
 
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(40.dp)
             .clip(CircleShape)
-            .background(color),
-        contentAlignment = Alignment.Center
+            .background(color)
     ) {
         Text(
             text = emoji,
-            style = MaterialTheme.typography.headlineMedium
+            modifier = Modifier.align(Alignment.Center),
+            color = Color.White,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewEntryDetailScreen() {
+    // Data Dummy untuk Preview
+    val dummyJournal = Journal(
+        id = 1,
+        title = "My Journal Entry",
+        date = "2025-05-01",
+        content = "This is the content of my journal entry. It's a great day today!",
+        moodLevel = 3,
+        imageUri = "https://example.com/image.jpg", // Ganti dengan image URL yang valid
+        location = "New York"
+    )
+
+    // Memanggil EntryDetailScreen dengan data dummy
+    EntryDetailScreen(
+        journal = dummyJournal,
+        onEdit = { /* Edit logic */ },
+        onDelete = { /* Delete logic */ }
+    )
 }

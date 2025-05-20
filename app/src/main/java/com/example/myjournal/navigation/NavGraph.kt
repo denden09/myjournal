@@ -6,21 +6,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.myjournal.model.Journal
+import com.example.myjournal.ui.auth.AuthViewModel
 import com.example.myjournal.ui.auth.LoginScreen
 import com.example.myjournal.ui.auth.SignUpScreen
 import com.example.myjournal.ui.atlas.AtlasScreen
 import com.example.myjournal.ui.calendar.CalendarScreen
-import com.example.myjournal.ui.journey.EditEntryScreen
-import com.example.myjournal.ui.journey.EntryDetailScreen
-import com.example.myjournal.ui.journey.JourneyScreen
-import com.example.myjournal.ui.journey.NewEntryScreen
-import com.example.myjournal.ui.journey.JournalViewModel
+import com.example.myjournal.ui.journey.*
 import com.example.myjournal.ui.media.MediaScreen
 import com.example.myjournal.ui.profile.EditProfileScreen
 import com.example.myjournal.ui.profile.ProfileScreen
@@ -37,9 +35,12 @@ fun NavGraph(
     journalViewModel: JournalViewModel,
     windowSizeClass: WindowSizeClass
 ) {
+    // 🔐 ViewModel untuk login status
+    val authViewModel: AuthViewModel = viewModel()
+
     NavHost(
         navController = navController,
-        startDestination = "login",
+        startDestination = if (authViewModel.isUserLoggedIn()) "journey" else "login",
         modifier = modifier
     ) {
 
@@ -53,7 +54,8 @@ fun NavGraph(
                 },
                 onSignUp = {
                     navController.navigate("signup")
-                }
+                },
+                authViewModel = authViewModel
             )
         }
 
@@ -63,7 +65,8 @@ fun NavGraph(
                     navController.navigate("journey") {
                         popUpTo("signup") { inclusive = true }
                     }
-                }
+                },
+                authViewModel = authViewModel
             )
         }
 
@@ -85,7 +88,7 @@ fun NavGraph(
             NewEntryScreen(
                 onSave = { title, content, imageUri, location ->
                     onAddJournal(title, content, imageUri, location)
-                    navController.popBackStack() // Kembali ke journey setelah save
+                    navController.popBackStack()
                 }
             )
         }
@@ -94,7 +97,6 @@ fun NavGraph(
             route = "journal_detail/{journalId}",
             arguments = listOf(navArgument("journalId") { type = NavType.IntType })
         ) { backStackEntry ->
-
             val journalId = backStackEntry.arguments?.getInt("journalId")
             val journal = journals.find { it.id == journalId }
 
@@ -106,11 +108,11 @@ fun NavGraph(
                     },
                     onDelete = {
                         onDeleteJournal(journal)
-                        navController.popBackStack() // Kembali setelah delete
+                        navController.popBackStack()
                     }
                 )
             } else {
-                Text("Journal not found") // Handle journal tidak ditemukan
+                Text("Journal not found")
             }
         }
 
@@ -118,7 +120,6 @@ fun NavGraph(
             route = "edit/{journalId}",
             arguments = listOf(navArgument("journalId") { type = NavType.IntType })
         ) { backStackEntry ->
-
             val journalId = backStackEntry.arguments?.getInt("journalId")
             val journal = journals.find { it.id == journalId }
 
@@ -127,10 +128,10 @@ fun NavGraph(
                     journal = journal,
                     onUpdate = { updatedTitle, updatedContent ->
                         onUpdateJournal(journal, updatedTitle, updatedContent)
-                        navController.popBackStack() // Kembali setelah update
+                        navController.popBackStack()
                     },
                     onBack = {
-                        navController.popBackStack() // <<< TAMBAH INI
+                        navController.popBackStack()
                     },
                     viewModel = journalViewModel
                 )
@@ -138,7 +139,6 @@ fun NavGraph(
                 Text("Journal not found")
             }
         }
-
 
         /** EXTRA FEATURE SCREENS **/
         composable("calendar") {
@@ -150,7 +150,6 @@ fun NavGraph(
                 }
             )
         }
-
 
         composable("media") {
             MediaScreen(
@@ -174,10 +173,5 @@ fun NavGraph(
         composable("search") {
             SearchScreen(navController = navController)
         }
-
-        /** OPTIONAL: UNKNOWN ROUTE HANDLING **/
-        // composable("not_found") {
-        //     Text("Page not found!")
-        // }
     }
 }

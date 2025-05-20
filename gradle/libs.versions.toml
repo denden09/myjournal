@@ -16,6 +16,7 @@ mapsComposeVersion = "2.11.4"
 playServicesLocation = "21.3.0"
 playServicesMapsVersion = "19.1.0"
 uiTextGoogleFontsVersion = "1.7.8"
+firebaseAuthVersion = "23.2.0"
 
 [libraries]
 androidx-activity-compose-v180 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
@@ -41,6 +42,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsComposeVersion" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

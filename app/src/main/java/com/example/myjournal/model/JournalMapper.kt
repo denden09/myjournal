@@ -1,7 +1,7 @@
 package com.example.myjournal.model
 
 import com.example.myjournal.data.local.JournalEntity
-import android.location.Location
+import com.example.myjournal.model.Journal
 
 // ✅ Entity ke Domain Model (Dari Database ke UI)
 fun JournalEntity.toJournal(): Journal {

@@ -43,12 +43,12 @@ fun AtlasScreen(journals: List<Journal>) {
                             fontWeight = FontWeight.Normal,
                             fontSize = 32.sp
                         ),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer // ✅ Gunakan warna teks sesuai tema
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer, // ✅ Warna Background TopAppBar
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer // ✅ Warna teks mengikuti tema
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
         }

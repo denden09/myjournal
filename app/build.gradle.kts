@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -44,13 +45,14 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.firebase:firebase-firestore-ktx:24.10.3") // atau versi terbaru
     implementation ("org.osmdroid:osmdroid-android:6.1.16")
     implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.maps.android:maps-compose:6.4.1")
-
-    // Pastikan libs ini terdefinisi di file libs. Jika tidak, hapus
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.google.accompanist.placeholder.material)
     implementation ("androidx.compose.material3:material3-window-size-class:1.1.2")
@@ -65,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.auth)
 
     // Testing
     testImplementation(libs.junit)

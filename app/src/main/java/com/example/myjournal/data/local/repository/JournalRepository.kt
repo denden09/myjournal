@@ -15,4 +15,10 @@ class JournalRepository(private val journalDao: JournalDao) {
     suspend fun deleteJournal(journal: JournalEntity) = journalDao.deleteJournal(journal)
 
     suspend fun updateJournal(journal: JournalEntity) = journalDao.updateJournal(journal)
+
+    suspend fun clearAllJournals() = journalDao.clearAll()
+
+    suspend fun insertJournals(journals: List<JournalEntity>) = journalDao.insertAll(journals)
+
+
 }
